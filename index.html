@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塞翁失马 - El Viejo de la Frontera Pierde su Caballo</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- UI Controls -->
+    <div id="ui-overlay">
+        <div class="story-panel">
+            <h1>塞翁失马 (Sài Wēng Shī Mǎ)</h1>
+            <p>El viejo de la frontera pierde su caballo</p>
+            <div id="scene-info">
+                <h3 id="scene-title">Bienvenido</h3>
+                <p id="scene-description">Use las teclas WASD para moverse y el mouse para mirar. Haga clic en los paneles dorados para avanzar en la historia.</p>
+                <div id="chinese-text"></div>
+            </div>
+            <div class="controls-info">
+                <p><strong>Controles:</strong> WASD para moverse | Mouse para mirar | Clic en paneles para continuar</p>
+                <button id="next-scene" class="btn btn--primary">Comenzar Historia</button>
+                <button id="reset-story" class="btn btn--secondary">Reiniciar</button>
+            </div>
+        </div>
+    </div>
+
+    <a-scene 
+        id="main-scene"
+        background="color: #87CEEB"
+        fog="type: linear; color: #EEE; near: 0; far: 100"
+        vr-mode-ui="enabled: true"
+        embedded
+        style="height: 100vh; width: 100%;">
+        
+        <!-- Assets -->
+        <a-assets>
+            <a-mixin id="horse-body" 
+                geometry="primitive: box; width: 2; height: 1; depth: 0.8"
+                material="color: #8B4513"></a-mixin>
+            <a-mixin id="horse-head"
+                geometry="primitive: box; width: 0.6; height: 0.8; depth: 0.6"
+                material="color: #A0522D"></a-mixin>
+            <a-mixin id="person-body"
+                geometry="primitive: cylinder; radius: 0.3; height: 1.5"
+                material="color: #2F4F4F"></a-mixin>
+            <a-mixin id="person-head"
+                geometry="primitive: sphere; radius: 0.2"
+                material="color: #FDBCB4"></a-mixin>
+            <a-mixin id="house-base"
+                geometry="primitive: box; width: 4; height: 3; depth: 3"
+                material="color: #8B4513"></a-mixin>
+            <a-mixin id="house-roof"
+                geometry="primitive: cone; radius-bottom: 3; radius-top: 0.5; height: 1.5"
+                material="color: #CD853F"></a-mixin>
+        </a-assets>
+
+        <!-- Lights -->
+        <a-light type="ambient" color="#FFA500" intensity="0.6"></a-light>
+        <a-light type="directional" position="10 20 10" color="#FFD700" intensity="0.8"></a-light>
+
+        <!-- Ground -->
+        <a-plane id="ground" 
+            position="0 0 0" 
+            rotation="-90 0 0" 
+            width="100" 
+            height="100" 
+            material="color: #90EE90; roughness: 0.8"></a-plane>
+
+        <!-- Mountain backdrop -->
+        <a-sphere id="mountain1" 
+            position="-30 5 -40" 
+            radius="15" 
+            material="color: #696969"
+            scale="1 0.5 1"></a-sphere>
+        <a-sphere id="mountain2" 
+            position="25 8 -45" 
+            radius="18" 
+            material="color: #708090"
+            scale="1 0.6 1"></a-sphere>
+        <a-sphere id="mountain3" 
+            position="0 6 -50" 
+            radius="20" 
+            material="color: #778899"
+            scale="1 0.4 1"></a-sphere>
+
+        <!-- Scene 1: Village with old man and horse -->
+        <a-entity id="scene1" visible="true">
+            <!-- Village houses -->
+            <a-entity id="house1" position="-8 1.5 -8">
+                <a-box mixin="house-base"></a-box>
+                <a-cone mixin="house-roof" position="0 2.25 0"></a-cone>
+            </a-entity>
+            <a-entity id="house2" position="8 1.5 -10">
+                <a-box mixin="house-base" scale="0.8 0.8 0.8"></a-box>
+                <a-cone mixin="house-roof" position="0 2 0" scale="0.8 0.8 0.8"></a-cone>
+            </a-entity>
+            
+            <!-- Frontier wall -->
+            <a-box id="frontier-wall" 
+                position="0 1 -20" 
+                width="40" 
+                height="2" 
+                depth="1" 
+                material="color: #8B4513"></a-box>
+
+            <!-- Old man (Sai Weng) -->
+            <a-entity id="old-man" position="2 0.75 -5">
+                <a-cylinder mixin="person-body"></a-cylinder>
+                <a-sphere mixin="person-head" position="0 1.2 0"></a-sphere>
+                <!-- Beard -->
+                <a-box position="0 0.8 0.15" 
+                    width="0.3" 
+                    height="0.4" 
+                    depth="0.1" 
+                    material="color: white"></a-box>
+            </a-entity>
+
+            <!-- Horse -->
+            <a-entity id="horse1" position="0 0.5 -3">
+                <a-box mixin="horse-body"></a-box>
+                <a-box mixin="horse-head" position="1.3 0.2 0"></a-box>
+                <!-- Legs -->
+                <a-cylinder position="0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+            </a-entity>
+
+            <!-- Info panel for scene 1 -->
+            <a-plane id="info-panel-1" 
+                position="5 2 -5" 
+                width="3" 
+                height="2" 
+                material="color: #FFD700; opacity: 0.9"
+                class="clickable"
+                text="value: Escena 1\nEl caballo se escapa\n\nHaz clic para continuar; 
+                      align: center; 
+                      color: black; 
+                      width: 6"></a-plane>
+        </a-entity>
+
+        <!-- Scene 2: Horse escaping -->
+        <a-entity id="scene2" visible="false">
+            <!-- Same village elements -->
+            <a-entity position="-8 1.5 -8">
+                <a-box mixin="house-base"></a-box>
+                <a-cone mixin="house-roof" position="0 2.25 0"></a-cone>
+            </a-entity>
+            <a-entity position="8 1.5 -10">
+                <a-box mixin="house-base" scale="0.8 0.8 0.8"></a-box>
+                <a-cone mixin="house-roof" position="0 2 0" scale="0.8 0.8 0.8"></a-cone>
+            </a-entity>
+            <a-box position="0 1 -20" width="40" height="2" depth="1" material="color: #8B4513"></a-box>
+
+            <!-- Old man looking worried -->
+            <a-entity position="2 0.75 -5">
+                <a-cylinder mixin="person-body"></a-cylinder>
+                <a-sphere mixin="person-head" position="0 1.2 0"></a-sphere>
+                <a-box position="0 0.8 0.15" width="0.3" height="0.4" depth="0.1" material="color: white"></a-box>
+            </a-entity>
+
+            <!-- Horse moving away -->
+            <a-entity id="escaping-horse" position="0 0.5 -15">
+                <a-box mixin="horse-body"></a-box>
+                <a-box mixin="horse-head" position="1.3 0.2 0"></a-box>
+                <a-cylinder position="0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                
+                <a-animation attribute="position" 
+                    to="0 0.5 -25" 
+                    dur="3000" 
+                    repeat="indefinite" 
+                    direction="alternate"></a-animation>
+            </a-entity>
+
+            <a-plane id="info-panel-2" 
+                position="-5 2 -5" 
+                width="3" 
+                height="2" 
+                material="color: #FFD700; opacity: 0.9"
+                class="clickable"
+                text="value: Escena 2\nEl caballo regresa\ncon más caballos\n\nHaz clic para continuar; 
+                      align: center; 
+                      color: black; 
+                      width: 6"></a-plane>
+        </a-entity>
+
+        <!-- Scene 3: Horse returns with more horses -->
+        <a-entity id="scene3" visible="false">
+            <!-- Same village -->
+            <a-entity position="-8 1.5 -8">
+                <a-box mixin="house-base"></a-box>
+                <a-cone mixin="house-roof" position="0 2.25 0"></a-cone>
+            </a-entity>
+            <a-entity position="8 1.5 -10">
+                <a-box mixin="house-base" scale="0.8 0.8 0.8"></a-box>
+                <a-cone mixin="house-roof" position="0 2 0" scale="0.8 0.8 0.8"></a-cone>
+            </a-entity>
+            <a-box position="0 1 -20" width="40" height="2" depth="1" material="color: #8B4513"></a-box>
+
+            <!-- Old man -->
+            <a-entity position="2 0.75 -5">
+                <a-cylinder mixin="person-body"></a-cylinder>
+                <a-sphere mixin="person-head" position="0 1.2 0"></a-sphere>
+                <a-box position="0 0.8 0.15" width="0.3" height="0.4" depth="0.1" material="color: white"></a-box>
+            </a-entity>
+
+            <!-- Multiple horses -->
+            <a-entity position="0 0.5 -3">
+                <a-box mixin="horse-body"></a-box>
+                <a-box mixin="horse-head" position="1.3 0.2 0"></a-box>
+                <a-cylinder position="0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #8B4513"></a-cylinder>
+            </a-entity>
+
+            <a-entity position="-3 0.5 -3">
+                <a-box mixin="horse-body" material="color: #654321"></a-box>
+                <a-box mixin="horse-head" position="1.3 0.2 0" material="color: #8B4513"></a-box>
+                <a-cylinder position="0.7 -0.8 0.3" radius="0.1" height="1" material="color: #654321"></a-cylinder>
+                <a-cylinder position="0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #654321"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 0.3" radius="0.1" height="1" material="color: #654321"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #654321"></a-cylinder>
+            </a-entity>
+
+            <a-entity position="3 0.5 -4">
+                <a-box mixin="horse-body" material="color: #D2691E"></a-box>
+                <a-box mixin="horse-head" position="1.3 0.2 0" material="color: #CD853F"></a-box>
+                <a-cylinder position="0.7 -0.8 0.3" radius="0.1" height="1" material="color: #D2691E"></a-cylinder>
+                <a-cylinder position="0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #D2691E"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 0.3" radius="0.1" height="1" material="color: #D2691E"></a-cylinder>
+                <a-cylinder position="-0.7 -0.8 -0.3" radius="0.1" height="1" material="color: #D2691E"></a-cylinder>
+            </a-entity>
+
+            <!-- Son -->
+            <a-entity id="son" position="-1 0.75 -1">
+                <a-cylinder radius="0.25" height="1.6" material="color: #4682B4"></a-cylinder>
+                <a-sphere radius="0.18" position="0 1.1 0" material="color: #FDBCB4"></a-sphere>
+            </a-entity>
+
+            <a-plane id="info-panel-3" 
+                position="6 2 -8" 
+                width="3" 
+                height="2" 
+                material="color: #FFD700; opacity: 0.9"
+                class="clickable"
+                text="value: Escena 3\nEl hijo se lesiona\n\nHaz clic para continuar; 
+                      align: center; 
+                      color: black; 
+                      width: 6"></a-plane>
+        </a-entity>
+
+        <!-- Scene 4: War and salvation -->
+        <a-entity id="scene4" visible="false">
+            <!-- War scene with soldiers -->
+            <a-entity position="-8 1.5 -8">
+                <a-box mixin="house-base"></a-box>
+                <a-cone mixin="house-roof" position="0 2.25 0"></a-cone>
+            </a-entity>
+            <a-box position="0 1 -20" width="40" height="2" depth="1" material="color: #8B4513"></a-box>
+
+            <!-- Old man -->
+            <a-entity position="2 0.75 -5">
+                <a-cylinder mixin="person-body"></a-cylinder>
+                <a-sphere mixin="person-head" position="0 1.2 0"></a-sphere>
+                <a-box position="0 0.8 0.15" width="0.3" height="0.4" depth="0.1" material="color: white"></a-box>
+            </a-entity>
+
+            <!-- Son with broken leg (sitting) -->
+            <a-entity id="injured-son" position="-1 0.3 -1">
+                <a-cylinder radius="0.25" height="1.2" material="color: #4682B4"></a-cylinder>
+                <a-sphere radius="0.18" position="0 0.8 0" material="color: #FDBCB4"></a-sphere>
+                <!-- Bandaged leg -->
+                <a-cylinder position="0.3 -0.3 0" radius="0.1" height="0.8" material="color: white" rotation="0 0 45"></a-cylinder>
+            </a-entity>
+
+            <!-- Marching soldiers -->
+            <a-entity position="-15 0.75 -12">
+                <a-cylinder radius="0.2" height="1.5" material="color: #800000"></a-cylinder>
+                <a-sphere radius="0.15" position="0 1.1 0" material="color: #FDBCB4"></a-sphere>
+            </a-entity>
+            <a-entity position="-12 0.75 -12">
+                <a-cylinder radius="0.2" height="1.5" material="color: #800000"></a-cylinder>
+                <a-sphere radius="0.15" position="0 1.1 0" material="color: #FDBCB4"></a-sphere>
+            </a-entity>
+            <a-entity position="-9 0.75 -12">
+                <a-cylinder radius="0.2" height="1.5" material="color: #800000"></a-cylinder>
+                <a-sphere radius="0.15" position="0 1.1 0" material="color: #FDBCB4"></a-sphere>
+            </a-entity>
+
+            <a-plane id="info-panel-4" 
+                position="5 2 -3" 
+                width="3" 
+                height="2" 
+                material="color: #FFD700; opacity: 0.9"
+                class="clickable"
+                text="value: Final\nLa pierna rota\nsalva al hijo\n\nHaz clic para reiniciar; 
+                      align: center; 
+                      color: black; 
+                      width: 6"></a-plane>
+        </a-entity>
+
+        <!-- Camera with controls -->
+        <a-entity id="cameraRig" position="5 1.6 5">
+            <a-camera id="camera" 
+                look-controls="enabled: true"
+                wasd-controls="enabled: true; fly: false"
+                cursor="fuse: false; rayOrigin: mouse"
+                raycaster="objects: .clickable"></a-camera>
+        </a-entity>
+    </a-scene>
+
+    <script src="app.js"></script>
+</body>
+</html>

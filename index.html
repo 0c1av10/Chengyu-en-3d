@@ -31,8 +31,20 @@
             <button id="vr-btn" class="btn btn-vr">Entrar en VR</button>
         </div>
         
+        <div class="progress-indicator">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div class="scene-labels">
+                <span class="scene-label active" data-scene="0">Trabajo</span>
+                <span class="scene-label" data-scene="1">Suerte</span>
+                <span class="scene-label" data-scene="2">Espera</span>
+                <span class="scene-label" data-scene="3">Ruina</span>
+            </div>
+        </div>
+        
         <div id="story-text" class="story-text">
-            <p>Un granjero trabajaba diligentemente en sus campos cuando un conejo corrió hacia un tocón de árbol y murió al impactar...</p>
+            <p id="current-story">Un granjero trabajaba diligentemente en sus campos cuando un conejo corrió hacia un tocón de árbol y murió al impactar...</p>
         </div>
     </div>
 
@@ -47,8 +59,12 @@
         <!-- Assets -->
         <a-assets>
             <!-- Sonidos -->
-            <audio id="rabbit-run" src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+fwtGQdBDuT2+/GeSUFKILI7t2QQAoUXrPp66hWFAlGoujvtGQdBBJ0xunr5MOM"></audio>
-            <audio id="impact-sound" src="data:audio/wav;base64,UklGRt4CAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YboCAAC4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4"></audio>
+            <audio id="rabbit-run" preload="auto" loop="false">
+                <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+fwtGQdBDuT2+/GeSUFKILI7t2QQAoUXrPp66hWFAlGoujvtGQdBBJ0xunr5MOM" type="audio/wav">
+            </audio>
+            <audio id="impact-sound" preload="auto">
+                <source src="data:audio/wav;base64,UklGRt4CAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YboCAAC4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4" type="audio/wav">
+            </audio>
         </a-assets>
 
         <!-- Iluminación -->
@@ -69,39 +85,29 @@
         </a-plane>
         
         <!-- Montañas de fondo -->
-        <a-triangle 
-            position="-8 2 -8" 
-            scale="3 3 1" 
-            color="#556B2F" 
-            rotation="0 0 0">
-        </a-triangle>
-        <a-triangle 
-            position="5 1.5 -7" 
-            scale="2.5 2.5 1" 
-            color="#6B8E23" 
-            rotation="0 0 0">
-        </a-triangle>
-        <a-triangle 
-            position="0 1.8 -9" 
-            scale="4 4 1" 
-            color="#808000" 
-            rotation="0 0 0">
-        </a-triangle>
+        <a-triangle position="-8 2 -8" scale="3 3 1" color="#556B2F"></a-triangle>
+        <a-triangle position="5 1.5 -7" scale="2.5 2.5 1" color="#6B8E23"></a-triangle>
+        <a-triangle position="0 1.8 -9" scale="4 4 1" color="#808000"></a-triangle>
 
         <!-- Campo de cultivo -->
-        <a-box 
-            position="-5 0.1 -2" 
-            width="6" 
-            height="0.2" 
-            depth="4" 
-            color="#8B4513">
-        </a-box>
-        
-        <!-- Surcos en el campo -->
-        <a-box position="-6 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
-        <a-box position="-5 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
-        <a-box position="-4 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
-        <a-box position="-3 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
+        <a-entity id="farm-field">
+            <a-box position="-5 0.1 -2" width="6" height="0.2" depth="4" color="#8B4513"></a-box>
+            <!-- Surcos en el campo -->
+            <a-box position="-6 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
+            <a-box position="-5 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
+            <a-box position="-4 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
+            <a-box position="-3 0.11 -1" width="0.3" height="0.05" depth="3" color="#654321"></a-box>
+        </a-entity>
+
+        <!-- Maleza (inicialmente oculta) -->
+        <a-entity id="weeds" visible="false">
+            <!-- Maleza distribuida por el campo -->
+            <a-cone position="-6 0.3 -1" radius-bottom="0.1" height="0.4" color="#228B22"></a-cone>
+            <a-cone position="-5.5 0.25 -0.5" radius-bottom="0.08" height="0.3" color="#32CD32"></a-cone>
+            <a-cone position="-4.5 0.35 -1.5" radius-bottom="0.12" height="0.5" color="#228B22"></a-cone>
+            <a-cone position="-3.5 0.3 -0.8" radius-bottom="0.09" height="0.4" color="#32CD32"></a-cone>
+            <a-cone position="-5 0.28 -2" radius-bottom="0.1" height="0.35" color="#228B22"></a-cone>
+        </a-entity>
 
         <!-- Tocón del árbol (elemento central) -->
         <a-entity id="tree-stump" position="2 0 -3">
@@ -131,62 +137,30 @@
             </a-ring>
             
             <!-- Corteza texturizada -->
-            <a-box 
-                position="0.6 0.3 0" 
-                width="0.1" 
-                height="0.4" 
-                depth="0.1" 
-                color="#654321">
-            </a-box>
-            <a-box 
-                position="-0.5 0.6 0.3" 
-                width="0.1" 
-                height="0.3" 
-                depth="0.1" 
-                color="#654321">
-            </a-box>
+            <a-box position="0.6 0.3 0" width="0.1" height="0.4" depth="0.1" color="#654321"></a-box>
+            <a-box position="-0.5 0.6 0.3" width="0.1" height="0.3" depth="0.1" color="#654321"></a-box>
         </a-entity>
 
         <!-- Granjero -->
-        <a-entity id="farmer" position="-5 0 -1">
+        <a-entity id="farmer" position="-5 0 -1" story-character>
             <!-- Cuerpo -->
-            <a-cylinder 
-                position="0 1.2 0" 
-                radius="0.3" 
-                height="0.8" 
-                color="#8B4513">
-            </a-cylinder>
-            
+            <a-cylinder position="0 1.2 0" radius="0.3" height="0.8" color="#8B4513"></a-cylinder>
             <!-- Cabeza -->
-            <a-sphere 
-                position="0 1.8 0" 
-                radius="0.25" 
-                color="#D2B48C">
-            </a-sphere>
-            
+            <a-sphere position="0 1.8 0" radius="0.25" color="#D2B48C"></a-sphere>
             <!-- Sombrero de granjero -->
-            <a-cone 
-                position="0 2.1 0" 
-                radius-bottom="0.4" 
-                radius-top="0.1" 
-                height="0.3" 
-                color="#8B4513">
-            </a-cone>
-            
+            <a-cone position="0 2.1 0" radius-bottom="0.4" radius-top="0.1" height="0.3" color="#8B4513"></a-cone>
             <!-- Brazo izquierdo -->
             <a-sphere position="-0.4 1.4 0" radius="0.1" color="#D2B48C"></a-sphere>
             <a-cylinder position="-0.6 1.1 0" radius="0.08" height="0.4" color="#D2B48C" rotation="0 0 -30"></a-cylinder>
-            
             <!-- Brazo derecho -->
             <a-sphere position="0.4 1.4 0" radius="0.1" color="#D2B48C"></a-sphere>
             <a-cylinder position="0.6 1.1 0" radius="0.08" height="0.4" color="#D2B48C" rotation="0 0 30"></a-cylinder>
-            
             <!-- Piernas -->
             <a-cylinder position="-0.15 0.4 0" radius="0.1" height="0.8" color="#654321"></a-cylinder>
             <a-cylinder position="0.15 0.4 0" radius="0.1" height="0.8" color="#654321"></a-cylinder>
-            
             <!-- Herramienta de trabajo -->
             <a-cylinder 
+                id="farming-tool"
                 position="0.8 1.2 0" 
                 radius="0.05" 
                 height="1.5" 
@@ -196,95 +170,15 @@
         </a-entity>
 
         <!-- Conejo -->
-        <a-entity id="rabbit" position="8 0.2 -3">
+        <a-entity id="rabbit" position="8 0.2 -3" rabbit-controller>
             <!-- Cuerpo -->
-            <a-sphere 
-                position="0 0.3 0" 
-                radius="0.3" 
-                color="#FFFFFF" 
-                scale="1.2 0.8 1">
-            </a-sphere>
-            
+            <a-sphere position="0 0.3 0" radius="0.3" color="#FFFFFF" scale="1.2 0.8 1"></a-sphere>
             <!-- Cabeza -->
-            <a-sphere 
-                position="0.3 0.4 0" 
-                radius="0.2" 
-                color="#FFFFFF">
-            </a-sphere>
-            
+            <a-sphere position="0.3 0.4 0" radius="0.2" color="#FFFFFF"></a-sphere>
             <!-- Orejas -->
-            <a-sphere 
-                position="0.4 0.65 -0.1" 
-                radius="0.08" 
-                color="#FFFFFF" 
-                scale="0.5 2 0.5">
-            </a-sphere>
-            <a-sphere 
-                position="0.4 0.65 0.1" 
-                radius="0.08" 
-                color="#FFFFFF" 
-                scale="0.5 2 0.5">
-            </a-sphere>
-            
+            <a-sphere position="0.4 0.65 -0.1" radius="0.08" color="#FFFFFF" scale="0.5 2 0.5"></a-sphere>
+            <a-sphere position="0.4 0.65 0.1" radius="0.08" color="#FFFFFF" scale="0.5 2 0.5"></a-sphere>
             <!-- Interior de orejas -->
-            <a-sphere 
-                position="0.4 0.6 -0.1" 
-                radius="0.03" 
-                color="#FFB6C1" 
-                scale="0.5 1.5 0.5">
-            </a-sphere>
-            <a-sphere 
-                position="0.4 0.6 0.1" 
-                radius="0.03" 
-                color="#FFB6C1" 
-                scale="0.5 1.5 0.5">
-            </a-sphere>
-            
-            <!-- Ojos -->
-            <a-sphere position="0.45 0.45 -0.08" radius="0.03" color="#000000"></a-sphere>
-            <a-sphere position="0.45 0.45 0.08" radius="0.03" color="#000000"></a-sphere>
-            
-            <!-- Nariz -->
-            <a-sphere position="0.5 0.4 0" radius="0.02" color="#FFB6C1"></a-sphere>
-            
-            <!-- Patas -->
-            <a-sphere position="0.1 0.1 -0.15" radius="0.08" color="#FFFFFF"></a-sphere>
-            <a-sphere position="0.1 0.1 0.15" radius="0.08" color="#FFFFFF"></a-sphere>
-            <a-sphere position="-0.1 0.1 -0.15" radius="0.08" color="#FFFFFF"></a-sphere>
-            <a-sphere position="-0.1 0.1 0.15" radius="0.08" color="#FFFFFF"></a-sphere>
-            
-            <!-- Cola -->
-            <a-sphere 
-                position="-0.3 0.35 0" 
-                radius="0.1" 
-                color="#FFFFFF" 
-                scale="0.6 0.6 0.6">
-            </a-sphere>
-        </a-entity>
+            <a-sphere position="0.4 0.6 -0.1" radius="0.03" color="#FFB6C1" scale="0.5 1.5 0.5"></a-sphere>
+            <a-sphere position="0.4 0.6 0.1" radius="0.03" color="#FFB6C1" scale="0.5 1.5 0.5"></a-sphere>
 
-        <!-- Efectos de partículas (polvo) -->
-        <a-entity 
-            id="dust-particles" 
-            position="2 0.5 -3" 
-            visible="false">
-            <a-sphere radius="0.02" color="#D2B48C" opacity="0.6" position="0 0 0"></a-sphere>
-            <a-sphere radius="0.015" color="#DEB887" opacity="0.5" position="0.1 0.1 0.1"></a-sphere>
-            <a-sphere radius="0.02" color="#F4A460" opacity="0.4" position="-0.1 0.05 -0.1"></a-sphere>
-            <a-sphere radius="0.01" color="#D2B48C" opacity="0.6" position="0.05 -0.05 0.15"></a-sphere>
-        </a-entity>
-
-        <!-- Cámara -->
-        <a-entity 
-            id="camera-rig" 
-            position="0 1.6 5">
-            <a-camera 
-                id="main-camera"
-                look-controls="enabled: true"
-                wasd-controls="enabled: true">
-            </a-camera>
-        </a-entity>
-    </a-scene>
-
-    <script src="app.js"></script>
-</body>
-</html>

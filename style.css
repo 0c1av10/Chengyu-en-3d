@@ -101,6 +101,60 @@ body {
     font-size: 1.1rem;
 }
 
+/* Indicador de progreso */
+.progress-indicator {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-border);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    width: 0%;
+    transition: width 1s ease;
+    border-radius: 4px;
+}
+
+.scene-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scene-label {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.scene-label.active {
+    background: var(--color-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.scene-label.completed {
+    background: var(--color-secondary);
+    color: white;
+}
+
 /* Controles */
 .controls {
     display: flex;
@@ -200,6 +254,7 @@ body {
 .story-text p {
     margin: 0;
     color: var(--color-text);
+    transition: opacity 0.5s ease;
 }
 
 /* Escena A-Frame */
@@ -242,6 +297,11 @@ body {
     .btn {
         width: 100%;
         max-width: 250px;
+    }
+    
+    .scene-labels {
+        flex-wrap: wrap;
+        gap: 5px;
     }
     
     #scene {
@@ -314,3 +374,4 @@ body.vr-mode .ui-container {
     z-index: 1000;
     animation: pulse 2s infinite;
 }
+

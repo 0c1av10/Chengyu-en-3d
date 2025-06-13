@@ -4,13 +4,18 @@ let isStoryPlaying = false;
 let storyTimer = null;
 let currentCameraView = 0;
 
+// Variables de audio mejoradas
+let isMuted = true; // Iniciamos sin audio por defecto
+let currentVolume = 0.1; // Volumen muy bajo
+let audioEnabled = false; // Audio deshabilitado por defecto
+
 // Configuración de escenas del chengyu
 const storyScenes = [
     {
         id: 0,
         title: "El Trabajo Diligente",
         description: "Un granjero trabajaba diligentemente en sus campos cuando un conejo corrió hacia un tocón de árbol y murió al impactar...",
-        duration: 8000, // 8 segundos
+        duration: 8000,
         cameraPosition: "0 1.6 5",
         cameraRotation: "0 0 0"
     },
@@ -18,7 +23,7 @@ const storyScenes = [
         id: 1,
         title: "El Golpe de Suerte",
         description: "El granjero, emocionado por su buena suerte, decidió abandonar su trabajo y sentarse junto al tocón esperando más conejos...",
-        duration: 6000, // 6 segundos
+        duration: 6000,
         cameraPosition: "3 2 -1",
         cameraRotation: "0 -45 0"
     },
@@ -26,7 +31,7 @@ const storyScenes = [
         id: 2,
         title: "La Espera Inútil",
         description: "Día tras día, el granjero esperaba junto al tocón, mientras sus campos se llenaban de maleza y se arruinaban...",
-        duration: 8000, // 8 segundos
+        duration: 8000,
         cameraPosition: "-5 3 -2",
         cameraRotation: "-15 90 0"
     },
@@ -34,13 +39,13 @@ const storyScenes = [
         id: 3,
         title: "La Ruina Final",
         description: "Al final, no llegaron más conejos, y el granjero perdió toda su cosecha por su pereza y dependencia de la suerte.",
-        duration: 10000, // 10 segundos
+        duration: 10000,
         cameraPosition: "0 4 0",
         cameraRotation: "-30 0 0"
     }
 ];
 
-// Componente personalizado para control del conejo
+// Componente personalizado para control del conejo - SIN AUDIO MOLESTO
 AFRAME.registerComponent('rabbit-controller', {
     init: function() {
         this.startPosition = this.el.getAttribute('position');
@@ -54,10 +59,10 @@ AFRAME.registerComponent('rabbit-controller', {
         this.isAnimating = true;
         const rabbit = this.el;
         
-        // Sonido de carrera
-        playSound('rabbit-run');
+        // NO reproducir audio automáticamente
+        console.log('🐰 Conejo comenzando a correr (modo silencioso)');
         
-        // Animación de movimiento hacia el tocón
+        // Animación visual sin sonido
         rabbit.setAttribute('animation__run', {
             property: 'position',
             to: '2.5 0.2 -3',
@@ -65,7 +70,6 @@ AFRAME.registerComponent('rabbit-controller', {
             easing: 'easeInQuad'
         });
         
-        // Rotación hacia el tocón
         rabbit.setAttribute('animation__turn', {
             property: 'rotation',
             to: '0 -90 0',
@@ -73,7 +77,6 @@ AFRAME.registerComponent('rabbit-controller', {
             easing: 'linear'
         });
         
-        // Programar el impacto
         setTimeout(() => {
             this.simulateImpact();
         }, 3000);
@@ -84,10 +87,9 @@ AFRAME.registerComponent('rabbit-controller', {
         const deadRabbit = document.querySelector('#dead-rabbit');
         const dustParticles = document.querySelector('#dust-particles');
         
-        // Sonido de impacto
-        playSound('impact-sound');
+        console.log('💥 Impacto del conejo (efectos visuales solamente)');
         
-        // Mostrar efectos de polvo
+        // Solo efectos visuales, sin audio estridente
         if (dustParticles) {
             dustParticles.setAttribute('visible', true);
             dustParticles.setAttribute('animation__dust', {
@@ -104,7 +106,7 @@ AFRAME.registerComponent('rabbit-controller', {
             }, 2000);
         }
         
-        // Ocultar conejo vivo y mostrar conejo muerto
+        // Cambio visual sin sonido
         rabbit.setAttribute('visible', false);
         if (deadRabbit) {
             deadRabbit.setAttribute('visible', true);
@@ -112,7 +114,6 @@ AFRAME.registerComponent('rabbit-controller', {
         
         this.isAnimating = false;
         
-        // Avanzar a la siguiente escena después del impacto
         setTimeout(() => {
             nextScene();
         }, 2000);
@@ -195,14 +196,71 @@ AFRAME.registerComponent('story-character', {
     }
 });
 
-// Funciones del sistema de historia
+// Gestión de audio mejorada
+function initializeAudioControls() {
+    const muteBtn = document.querySelector('#mute-btn');
+    const volumeSlider = document.querySelector('#volume-slider');
+    const volumeDisplay = document.querySelector('#volume-display');
+    
+    // Configurar estado inicial (silenciado)
+    if (muteBtn) {
+        muteBtn.textContent = '🔇 Silenciado';
+        muteBtn.classList.add('muted');
+    }
+    
+    // Event listeners
+    if (muteBtn) {
+        muteBtn.addEventListener('click', toggleMute);
+    }
+    
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value / 100;
+            currentVolume = volume;
+            if (volumeDisplay) {
+                volumeDisplay.textContent = this.value + '%';
+            }
+        });
+    }
+    
+    console.log('🔇 Sistema de audio inicializado en modo silencioso');
+}
+
+function toggleMute() {
+    const muteBtn = document.querySelector('#mute-btn');
+    isMuted = !isMuted;
+    audioEnabled = !isMuted;
+    
+    if (muteBtn) {
+        if (isMuted) {
+            muteBtn.textContent = '🔇 Silenciado';
+            muteBtn.classList.add('muted');
+            console.log('🔇 Audio silenciado por el usuario');
+        } else {
+            muteBtn.textContent = '🔊 Audio';
+            muteBtn.classList.remove('muted');
+            console.log('🔊 Audio habilitado por el usuario');
+        }
+    }
+}
+
+// Función segura para audio (no forzar reproducción)
+function playSafeSound(message) {
+    if (audioEnabled && !isMuted) {
+        console.log('🎵 ' + message);
+        // Aquí podrías agregar audio real si el usuario lo habilita
+    } else {
+        console.log('🔇 Audio deshabilitado: ' + message);
+    }
+}
+
+// Funciones del sistema de historia (sin audio molesto)
 function initializeStory() {
-    console.log('🎬 Inicializando sistema de historia del chengyu 守株待兔');
+    console.log('🎬 Inicializando sistema de historia del chengyu 守株待兔 (modo silencioso)');
     currentScene = 0;
     isStoryPlaying = false;
     updateUI();
     
-    // Configurar componentes personalizados
     const rabbit = document.querySelector('#rabbit');
     const farmer = document.querySelector('#farmer');
     
@@ -218,11 +276,10 @@ function initializeStory() {
 function startStory() {
     if (isStoryPlaying) return;
     
-    console.log('▶️ Iniciando historia automática');
+    console.log('▶️ Iniciando historia automática (experiencia silenciosa)');
     isStoryPlaying = true;
     currentScene = 0;
     
-    // Iniciar la primera escena
     executeScene(currentScene);
 }
 
@@ -236,36 +293,30 @@ function executeScene(sceneIndex) {
     const scene = storyScenes[sceneIndex];
     console.log(`🎭 Ejecutando escena ${sceneIndex}: ${scene.title}`);
     
-    // Actualizar UI
     updateSceneUI(sceneIndex);
-    
-    // Actualizar cámara
     updateCamera(scene.cameraPosition, scene.cameraRotation);
     
-    // Ejecutar acciones específicas de la escena
     switch(sceneIndex) {
         case 0:
-            executeScene0(); // Trabajo y llegada del conejo
+            executeScene0();
             break;
         case 1:
-            executeScene1(); // Granjero se mueve al tocón
+            executeScene1();
             break;
         case 2:
-            executeScene2(); // Aparece la maleza
+            executeScene2();
             break;
         case 3:
-            executeScene3(); // Vista final de la ruina
+            executeScene3();
             break;
     }
     
-    // Programar la siguiente escena
     if (sceneIndex < storyScenes.length - 1) {
         storyTimer = setTimeout(() => {
             currentScene++;
             executeScene(currentScene);
         }, scene.duration);
     } else {
-        // Reiniciar automáticamente después de completar la historia
         storyTimer = setTimeout(() => {
             restartStory();
         }, scene.duration);
@@ -273,7 +324,6 @@ function executeScene(sceneIndex) {
 }
 
 function executeScene0() {
-    // Escena 1: Granjero trabajando, conejo corriendo hacia el tocón
     const farmer = document.querySelector('#farmer');
     const rabbit = document.querySelector('#rabbit');
     
@@ -281,7 +331,6 @@ function executeScene0() {
         farmer.components['story-character'].startWorking();
     }
     
-    // Comenzar animación del conejo después de 2 segundos
     setTimeout(() => {
         if (rabbit && rabbit.components['rabbit-controller']) {
             rabbit.components['rabbit-controller'].startRunning();
@@ -290,7 +339,6 @@ function executeScene0() {
 }
 
 function executeScene1() {
-    // Escena 2: Granjero deja de trabajar y se mueve al tocón
     const farmer = document.querySelector('#farmer');
     
     if (farmer && farmer.components['story-character']) {
@@ -302,7 +350,6 @@ function executeScene1() {
 }
 
 function executeScene2() {
-    // Escena 3: Aparece la maleza en los campos abandonados
     const weeds = document.querySelector('#weeds');
     if (weeds) {
         weeds.setAttribute('visible', true);
@@ -317,7 +364,6 @@ function executeScene2() {
 }
 
 function executeScene3() {
-    // Escena 4: Vista final mostrando la ruina total
     console.log('📖 Escena final: La moraleja del chengyu');
 }
 
@@ -338,14 +384,12 @@ function nextScene() {
 }
 
 function updateSceneUI(sceneIndex) {
-    // Actualizar indicador de progreso
     const progressFill = document.querySelector('#progress-fill');
     const progressPercent = ((sceneIndex + 1) / storyScenes.length) * 100;
     if (progressFill) {
         progressFill.style.width = progressPercent + '%';
     }
     
-    // Actualizar etiquetas de escena
     const sceneLabels = document.querySelectorAll('.scene-label');
     sceneLabels.forEach((label, index) => {
         label.classList.remove('active', 'completed');
@@ -356,7 +400,6 @@ function updateSceneUI(sceneIndex) {
         }
     });
     
-    // Actualizar texto de la historia
     const storyText = document.querySelector('#current-story');
     if (storyText && storyScenes[sceneIndex]) {
         storyText.style.opacity = '0';
@@ -389,13 +432,11 @@ function updateCamera(position, rotation) {
 function restartStory() {
     console.log('🔄 Reiniciando historia del chengyu');
     
-    // Limpiar timers
     if (storyTimer) {
         clearTimeout(storyTimer);
         storyTimer = null;
     }
     
-    // Resetear elementos
     const rabbit = document.querySelector('#rabbit');
     const farmer = document.querySelector('#farmer');
     const deadRabbit = document.querySelector('#dead-rabbit');
@@ -424,12 +465,10 @@ function restartStory() {
         dustParticles.setAttribute('visible', false);
     }
     
-    // Resetear UI
     currentScene = 0;
     isStoryPlaying = false;
     updateUI();
     
-    // Reiniciar historia después de 3 segundos
     setTimeout(() => {
         startStory();
     }, 3000);
@@ -437,17 +476,6 @@ function restartStory() {
 
 function updateUI() {
     updateSceneUI(currentScene);
-}
-
-// Funciones de utilidad
-function playSound(soundId) {
-    const audio = document.querySelector(`#${soundId}`);
-    if (audio) {
-        audio.currentTime = 0;
-        audio.play().catch(e => {
-            console.log(`Audio ${soundId} no pudo reproducirse:`, e);
-        });
-    }
 }
 
 function changeCameraView() {
@@ -481,7 +509,10 @@ function resetAll() {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Chengyu 守株待兔 VR Experience cargado');
+    console.log('🚀 Chengyu 守株待兔 VR Experience cargado (versión silenciosa)');
+    
+    // Inicializar controles de audio primero
+    initializeAudioControls();
     
     // Configurar botones
     const restartBtn = document.querySelector('#restart-btn');
@@ -514,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Inicializar y comenzar historia automáticamente
+    // Inicializar y comenzar historia automáticamente (sin audio)
     setTimeout(() => {
         initializeStory();
         startStory();
@@ -535,4 +566,4 @@ window.addEventListener('load', function() {
     }
 });
 
-console.log('🐰 Sistema de historia del chengyu 守株待兔 inicializado correctamente');
+console.log('🐰 Sistema de historia del chengyu 守株待兔 inicializado correctamente (modo silencioso)');

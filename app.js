@@ -2,41 +2,44 @@
 let currentAct = 0;
 const totalActs = 4;
 
-// Datos de los actos
+// Datos actualizados de los actos con formato mejorado
 const storyActs = [
     {
-        title: "ACTO 1 DE 4",
-        text: "En los campos de la antigua China, vivía un granjero muy trabajador.&#10;&#10;Cada día, desde el amanecer hasta el atardecer, cultivaba sus tierras&#10;con dedicación y esfuerzo constante. Sus campos eran prósperos&#10;gracias a su trabajo duro y planificación cuidadosa.&#10;&#10;Un día, mientras trabajaba, vio algo inesperado...",
+        title: "HISTORIA • ACTO 1 DE 4",
+        text: "Historia:&#10;Un granjero vivía trabajando duro en los campos antiguos de China.&#10;&#10;Moraleja:&#10;Enseña sobre los peligros de depender de la suerte en lugar&#10;del trabajo duro. No se debe abandonar el esfuerzo esperando&#10;que la casualidad se repita.&#10;&#10;Contexto Cultural:&#10;Este chengyu se usa para criticar a personas que confían&#10;en golpes de suerte en lugar de mostrar iniciativa propia.",
         cameraPosition: "0 1.7 6",
         showElements: ['farmer', 'farm-field'],
-        hideElements: ['dead-rabbit', 'weeds']
+        hideElements: ['dead-rabbit', 'weeds'],
+        progressWidth: 1.5
     },
     {
-        title: "ACTO 2 DE 4",
-        text: "¡Un conejo corrió directamente hacia un tocón de árbol y murió!&#10;&#10;El granjero se emocionó mucho por esta buena suerte inesperada.&#10;'¡Qué fácil fue obtener carne sin esfuerzo!' pensó.&#10;&#10;Decidió abandonar su trabajo en los campos y sentarse&#10;junto al tocón, esperando que más conejos vinieran&#10;y se mataran de la misma manera.",
+        title: "HISTORIA • ACTO 2 DE 4",
+        text: "Historia:&#10;Un conejo corrió hacia un tocón y murió. El granjero se emocionó&#10;por esta suerte inesperada y decidió abandonar su trabajo.&#10;&#10;Moraleja:&#10;Muestra cómo un evento fortuito puede hacer que las personas&#10;abandonen sus responsabilidades esperando más suerte.&#10;&#10;Contexto Cultural:&#10;Representa la mentalidad de quienes prefieren esperar&#10;oportunidades fáciles en lugar de crear su propio éxito.",
         cameraPosition: "4 2.5 -1",
         showElements: ['dead-rabbit'],
-        hideElements: ['rabbit']
+        hideElements: ['rabbit'],
+        progressWidth: 3.0
     },
     {
-        title: "ACTO 3 DE 4",
-        text: "Día tras día, el granjero se sentaba junto al tocón esperando.&#10;&#10;Mientras él esperaba más conejos, sus campos comenzaron&#10;a llenarse de maleza. Las plantas que había cultivado&#10;con tanto esfuerzo se arruinaron por falta de cuidado.&#10;&#10;Pero el granjero siguió esperando, confiando en que&#10;la suerte le traería más conejos sin esfuerzo...",
+        title: "HISTORIA • ACTO 3 DE 4",
+        text: "Historia:&#10;El granjero esperaba junto al tocón mientras sus campos&#10;se llenaban de maleza y se arruinaban por falta de cuidado.&#10;&#10;Moraleja:&#10;Ilustra las consecuencias de abandonar el trabajo constante&#10;por confiar en eventos casuales que pueden no repetirse.&#10;&#10;Contexto Cultural:&#10;Critica la pereza disfrazada de esperanza y la falta&#10;de planificación a largo plazo en la vida.",
         cameraPosition: "-6 3.5 -2",
         showElements: ['weeds'],
-        hideElements: []
+        hideElements: [],
+        progressWidth: 4.5
     },
     {
-        title: "ACTO 4 DE 4",
-        text: "Nunca llegaron más conejos al tocón.&#10;&#10;El granjero perdió toda su cosecha por abandonar el trabajo duro&#10;y depender únicamente de la suerte. Sus campos prósperos&#10;se convirtieron en terrenos baldíos llenos de maleza.&#10;&#10;MORALEJA DEL CHENGYU:&#10;'No confíes en golpes de suerte casuales.&#10;El éxito verdadero viene del esfuerzo constante&#10;y la planificación cuidadosa.'",
+        title: "HISTORIA • ACTO 4 DE 4",
+        text: "Historia:&#10;Nunca llegaron más conejos. El granjero perdió toda su cosecha&#10;por depender de la suerte en lugar del trabajo duro.&#10;&#10;Moraleja Final:&#10;El éxito verdadero viene del esfuerzo constante y la planificación&#10;cuidadosa, no de esperar golpes de suerte casuales.&#10;&#10;Enseñanza:&#10;Este chengyu nos recuerda que debemos ser proactivos&#10;y trabajadores, no reactivos y perezosos.",
         cameraPosition: "0 5 0",
         showElements: ['weeds'],
-        hideElements: []
+        hideElements: [],
+        progressWidth: 6.0
     }
 ];
 
 // Inicialización cuando la escena está lista
 document.addEventListener('DOMContentLoaded', function() {
-    // Esperar a que A-Frame esté completamente cargado
     const scene = document.querySelector('a-scene');
     
     if (scene.hasLoaded) {
@@ -47,12 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeStory() {
-    console.log('🎬 Inicializando historia del chengyu');
+    console.log('🎬 Inicializando historia del chengyu con texto mejorado');
     
-    // Configurar eventos de click
     setupClickEvents();
-    
-    // Mostrar primer acto
     displayAct(0);
 }
 
@@ -63,7 +63,7 @@ function setupClickEvents() {
     if (continueBtn) {
         continueBtn.addEventListener('click', nextAct);
         continueBtn.addEventListener('mouseenter', function() {
-            this.setAttribute('animation__hover', 'property: scale; to: 1.1 1.1 1.1; dur: 200');
+            this.setAttribute('animation__hover', 'property: scale; to: 1.05 1.05 1.05; dur: 200');
         });
         continueBtn.addEventListener('mouseleave', function() {
             this.setAttribute('animation__unhover', 'property: scale; to: 1 1 1; dur: 200');
@@ -73,7 +73,7 @@ function setupClickEvents() {
     if (restartBtn) {
         restartBtn.addEventListener('click', restartStory);
         restartBtn.addEventListener('mouseenter', function() {
-            this.setAttribute('animation__hover', 'property: scale; to: 1.1 1.1 1.1; dur: 200');
+            this.setAttribute('animation__hover', 'property: scale; to: 1.05 1.05 1.05; dur: 200');
         });
         restartBtn.addEventListener('mouseleave', function() {
             this.setAttribute('animation__unhover', 'property: scale; to: 1 1 1; dur: 200');
@@ -104,6 +104,7 @@ function displayAct(actIndex) {
     // Actualizar textos
     const actIndicator = document.querySelector('#act-indicator');
     const mainText = document.querySelector('#main-story-text');
+    const progressBar = document.querySelector('#progress-bar');
     
     if (actIndicator) {
         actIndicator.setAttribute('value', act.title);
@@ -111,6 +112,16 @@ function displayAct(actIndex) {
     
     if (mainText) {
         mainText.setAttribute('value', act.text);
+    }
+    
+    // Actualizar barra de progreso
+    if (progressBar) {
+        progressBar.setAttribute('animation__progress', {
+            property: 'width',
+            to: act.progressWidth,
+            dur: 800,
+            easing: 'easeOutQuart'
+        });
     }
     
     // Actualizar cámara
@@ -198,6 +209,12 @@ function resetScene() {
     if (rabbit) {
         rabbit.setAttribute('visible', true);
     }
+    
+    // Resetear barra de progreso
+    const progressBar = document.querySelector('#progress-bar');
+    if (progressBar) {
+        progressBar.setAttribute('width', '1.5');
+    }
 }
 
-console.log('📖 Sistema de navegación del chengyu 守株待兔 cargado');
+console.log('📖 Sistema mejorado del chengyu 守株待兔 cargado');

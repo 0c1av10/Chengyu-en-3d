@@ -101,6 +101,61 @@ body {
     font-size: 1.1rem;
 }
 
+/* Controles de Audio Mejorados */
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+}
+
+.btn-audio {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.btn-audio:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.btn-audio.muted {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.volume-slider {
+    width: 100px;
+    height: 6px;
+    border-radius: 3px;
+    background: #ddd;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+}
+
+#volume-display {
+    font-size: 0.8rem;
+    color: #666;
+    min-width: 35px;
+}
+
 /* Indicador de progreso */
 .progress-indicator {
     margin-bottom: 20px;
@@ -206,11 +261,6 @@ body {
     box-shadow: 0 4px 15px rgba(196, 30, 58, 0.3);
 }
 
-.btn-primary:active {
-    transform: translateY(0);
-    background: var(--color-primary-active);
-}
-
 .btn-secondary {
     background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-hover));
     color: white;
@@ -230,13 +280,6 @@ body {
 .btn-vr:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: translateY(-2px) scale(1); }
-    50% { transform: translateY(-2px) scale(1.05); }
-    100% { transform: translateY(-2px) scale(1); }
 }
 
 /* Texto de la historia */
@@ -304,42 +347,22 @@ body {
         gap: 5px;
     }
     
+    .audio-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
     #scene {
         height: 50vh !important;
     }
 }
 
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 1.8rem;
-    }
-    
-    .subtitle {
-        font-size: 1rem;
-    }
-    
-    .info-panel {
-        padding: 15px;
-    }
-    
-    .story-text {
-        font-size: 1rem;
-        padding: 15px;
-    }
+/* Modo VR - ocultar UI */
+body.vr-mode .ui-container {
+    display: none;
 }
 
-/* Efectos especiales */
-.chengyu-chars {
-    font-family: 'SimSun', '宋体', serif;
-    font-size: 1.5rem;
-    color: var(--color-primary);
-    font-weight: bold;
-    display: inline-block;
-    margin: 10px 0;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-/* Animaciones de carga */
+/* Animaciones suaves */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -353,25 +376,5 @@ body {
 
 .ui-container {
     animation: fadeIn 0.8s ease-out;
-}
-
-/* Modo VR - ocultar UI */
-body.vr-mode .ui-container {
-    display: none;
-}
-
-/* Indicador de VR activo */
-.vr-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--color-vr);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    box-shadow: var(--shadow);
-    z-index: 1000;
-    animation: pulse 2s infinite;
 }
 

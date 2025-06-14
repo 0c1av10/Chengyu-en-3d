@@ -2,69 +2,50 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>守株待兔 - Experiencia Interactiva</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="vr-notice">Modo VR Activado - Usa controles del visor</div>
+    <div class="vr-notice">Usa tu visor VR para mejor experiencia</div>
     
-    <a-scene vr-mode-ui="enabled: true" renderer="antialias: true; colorManagement: true;" xr-mode>
-
-        <!-- Escena principal -->
-        <a-entity id="scene-container">
+    <a-scene vr-mode-ui="enabled: true" renderer="antialias: true; colorManagement: true;">
+        <!-- Escenario principal -->
+        <a-entity id="main-scene">
             <!-- Terreno -->
-            <a-grid position="0 0 0" width="20" height="20" color="#8B4513" rotation="-90 0 0"></a-grid>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#8B4513"></a-plane>
             
-            <!-- Montañas -->
-            <a-triangle position="-15 5 -20" rotation="0 0 0" scale="10 10 10" color="#556B2F"></a-triangle>
-            <a-triangle position="15 3 -18" rotation="0 30 0" scale="8 8 8" color="#6B8E23"></a-triangle>
-
             <!-- Granjero -->
-            <a-entity id="farmer" position="-5 0 0" class="act1">
+            <a-entity id="farmer" position="-3 0 0">
                 <a-cylinder position="0 1 0" radius="0.3" height="1.8" color="#8B4513"></a-cylinder>
                 <a-sphere position="0 1.9 0" radius="0.25" color="#DEB887"></a-sphere>
                 <a-cone position="0 2.2 0" radius-bottom="0.4" radius-top="0.1" height="0.3" color="#8B4513"></a-cone>
-                <a-cylinder position="-0.5 0.5 0" radius="0.1" height="1" color="#8B4513" rotation="0 0 45"></a-cylinder>
             </a-entity>
 
             <!-- Tocón de árbol -->
             <a-cylinder id="tree-stump" position="5 0 0" radius="0.5" height="1" color="#654321"></a-cylinder>
 
             <!-- Conejo -->
-            <a-entity id="rabbit" position="15 0 0" class="act1">
+            <a-entity id="rabbit" position="10 0 0">
                 <a-sphere position="0 0.3 0" radius="0.3" color="white"></a-sphere>
                 <a-cone position="0 0.6 0" radius-bottom="0.1" radius-top="0.05" height="0.3" color="white"></a-cone>
             </a-entity>
-
-            <!-- Maleza -->
-            <a-entity id="weeds" class="act3" visible="false">
-                <a-cone position="3 0 -2" radius-bottom="0.3" height="0.5" color="#228B22"></a-cone>
-                <a-cone position="-2 0 1" radius-bottom="0.2" height="0.4" color="#32CD32"></a-cone>
-            </a-entity>
         </a-entity>
 
-        <!-- Panel informativo -->
-        <a-entity id="info-panel" position="0 2.5 -2" look-at="[camera]">
-            <a-plane width="3" height="2" color="rgba(255,255,255,0.95)" shader="flat">
-                <a-text value="守株待兔" position="0 0.7 0.1" scale="2 2 2" align="center" color="#C41E3A"></a-text>
-                <a-text id="story-text" position="0 0.2 0.1" width="2.5" align="center" color="#333"></a-text>
-                <a-plane id="progress-bar" width="2" height="0.1" position="0 -0.4 0.1" color="#CCC">
-                    <a-plane id="progress-fill" width="0.5" height="0.09" position="-0.75 -0.005 0.1" color="#2E8B57"></a-plane>
-                </a-plane>
-                <a-ring id="next-btn" class="clickable" position="0.8 -0.7 0.1" radius-inner="0.3" radius-outer="0.4" 
-                        theta-length="180" color="#2E8B57" rotation="0 0 90">
-                    <a-text value="▶" position="0 0 0.1" align="center" color="white"></a-text>
-                </a-ring>
+        <!-- Panel de información -->
+        <a-entity id="info-panel" position="0 2.5 -3">
+            <a-plane width="3" height="2" color="rgba(255,255,255,0.95)">
+                <a-text value="守株待兔" position="0 0.7 0.1" scale="2 2 2" color="#C41E3A"></a-text>
+                <a-text id="story-text" position="0 0 0.1" width="2.5" align="center" color="#333"></a-text>
+                <a-button id="next-btn" label="Siguiente" position="0 -0.6 0.1"></a-button>
             </a-plane>
         </a-entity>
 
-        <!-- Sistema de cámara -->
+        <!-- Cámara y controles -->
         <a-entity id="camera-rig" position="0 1.6 5">
-            <a-camera wasd-controls="enabled: true" look-controls="enabled: true" 
-                     cursor="rayOrigin: mouse" raycaster="objects: .clickable">
-                <a-cursor fuse-timeout="1500"></a-cursor>
+            <a-camera wasd-controls="enabled: true" look-controls="enabled: true">
+                <a-cursor></a-cursor>
             </a-camera>
         </a-entity>
 

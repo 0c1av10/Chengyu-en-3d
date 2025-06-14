@@ -1,155 +1,74 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>守株待兔 - Historia Interactiva</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>守株待兔 - Experiencia Interactiva</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a-scene 
-        id="scene" 
-        style="height: 100vh; width: 100vw;"
-        vr-mode-ui="enabled: true"
-        device-orientation-permission-ui="enabled: false"
-        background="color: #87CEEB"
-        cursor="rayOrigin: mouse">
-        
-        <!-- Iluminación -->
-        <a-light type="ambient" color="#404040" intensity="0.6"></a-light>
-        <a-light type="directional" position="3 5 2" color="#ffffff" intensity="0.8"></a-light>
-        
-        <!-- Entorno base -->
-        <a-plane position="0 0 0" rotation="-90 0 0" width="25" height="25" color="#8FBC8F"></a-plane>
-        
-        <!-- Montañas de fondo -->
-        <a-triangle position="-10 2.5 -12" scale="4 4 1" color="#556B2F"></a-triangle>
-        <a-triangle position="8 2 -10" scale="3 3 1" color="#6B8E23"></a-triangle>
-        <a-triangle position="0 2.2 -15" scale="5 5 1" color="#808000"></a-triangle>
+    <div class="vr-notice">Modo VR Activado - Usa controles del visor</div>
+    
+    <a-scene vr-mode-ui="enabled: true" renderer="antialias: true; colorManagement: true;" xr-mode>
 
-        <!-- Campo de cultivo -->
-        <a-entity id="farm-field">
-            <a-box position="-6 0.1 -2" width="8" height="0.3" depth="5" color="#8B4513"></a-box>
-            <a-box position="-7 0.12 -1" width="0.4" height="0.08" depth="4" color="#654321"></a-box>
-            <a-box position="-6 0.12 -1" width="0.4" height="0.08" depth="4" color="#654321"></a-box>
-            <a-box position="-5 0.12 -1" width="0.4" height="0.08" depth="4" color="#654321"></a-box>
-            <a-box position="-4 0.12 -1" width="0.4" height="0.08" depth="4" color="#654321"></a-box>
-        </a-entity>
-
-        <!-- Maleza -->
-        <a-entity id="weeds" visible="false">
-            <a-cone position="-7 0.4 -1" radius-bottom="0.12" height="0.5" color="#228B22"></a-cone>
-            <a-cone position="-6.5 0.35 -0.5" radius-bottom="0.1" height="0.4" color="#32CD32"></a-cone>
-            <a-cone position="-5.5 0.45 -1.8" radius-bottom="0.15" height="0.6" color="#228B22"></a-cone>
-        </a-entity>
-
-        <!-- Tocón del árbol -->
-        <a-entity id="tree-stump" position="3 0 -4">
-            <a-cylinder position="0 0.6 0" radius="0.9" height="1.2" color="#8B4513"></a-cylinder>
-            <a-ring position="0 1.21 0" radius-inner="0.12" radius-outer="0.8" color="#654321" rotation="-90 0 0"></a-ring>
-        </a-entity>
-
-        <!-- Granjero -->
-        <a-entity id="farmer" position="-6 0 -1">
-            <a-cylinder position="0 1.3 0" radius="0.35" height="0.9" color="#8B4513"></a-cylinder>
-            <a-sphere position="0 1.9 0" radius="0.28" color="#D2B48C"></a-sphere>
-            <a-cone position="0 2.25 0" radius-bottom="0.45" radius-top="0.12" height="0.35" color="#8B4513"></a-cone>
-            <a-cylinder position="-0.18 0.45 0" radius="0.12" height="0.9" color="#654321"></a-cylinder>
-            <a-cylinder position="0.18 0.45 0" radius="0.12" height="0.9" color="#654321"></a-cylinder>
-        </a-entity>
-
-        <!-- Conejo -->
-        <a-entity id="rabbit" position="12 0.25 -4">
-            <a-sphere position="0 0.35 0" radius="0.35" color="#FFFFFF" scale="1.3 0.9 1.1"></a-sphere>
-            <a-sphere position="0.35 0.45 0" radius="0.23" color="#FFFFFF"></a-sphere>
-            <a-sphere position="0.45 0.75 -0.12" radius="0.09" color="#FFFFFF" scale="0.6 2.2 0.6"></a-sphere>
-            <a-sphere position="0.45 0.75 0.12" radius="0.09" color="#FFFFFF" scale="0.6 2.2 0.6"></a-sphere>
-        </a-entity>
-
-        <!-- Conejo muerto -->
-        <a-entity id="dead-rabbit" position="3.5 0.05 -4" visible="false">
-            <a-sphere position="0 0.12 0" radius="0.35" color="#F5F5F5" scale="1.3 0.9 1.1" rotation="0 0 85"></a-sphere>
-        </a-entity>
-
-        <!-- Panel de Historia con diseño mejorado -->
-        <a-entity id="story-panel" position="0 3.5 -8" visible="true">
-            <!-- Fondo principal con gradiente visual -->
-            <a-plane position="0 0 -0.1" width="12" height="7" color="#F8F9FA" opacity="0.98"></a-plane>
+        <!-- Escena principal -->
+        <a-entity id="scene-container">
+            <!-- Terreno -->
+            <a-grid position="0 0 0" width="20" height="20" color="#8B4513" rotation="-90 0 0"></a-grid>
             
-            <!-- Marco decorativo superior -->
-            <a-plane position="0 3.2 -0.05" width="11.5" height="0.4" color="#C41E3A"></a-plane>
-            
-            <!-- Título principal con fondo -->
-            <a-plane position="0 2.5 -0.05" width="8" height="0.8" color="#FFF5F5">
-                <a-text id="chengyu-title" value="守株待兔" position="0 0 0.01" align="center" 
-                        color="#C41E3A" width="18" font="roboto"></a-text>
-            </a-plane>
-            
-            <!-- Subtítulo con pronunciación -->
-            <a-text id="story-subtitle" value="Shǒu Zhū Dài Tù" 
-                    position="0 1.9 0" align="center" color="#666666" width="12"></a-text>
-            <a-text value="Esperar al conejo junto al árbol" 
-                    position="0 1.6 0" align="center" color="#999999" width="10"></a-text>
-            
-            <!-- Indicador de progreso visual -->
-            <a-entity position="0 1.2 0">
-                <a-text id="act-indicator" value="HISTORIA • ACTO 1 DE 4" position="0 0 0" align="center" 
-                        color="#2E8B57" width="10"></a-text>
-                
-                <!-- Barra de progreso -->
-                <a-plane position="0 -0.2 0" width="6" height="0.1" color="#E0E0E0">
-                    <a-plane id="progress-bar" position="-2.25 0 0.01" width="1.5" height="0.08" color="#2E8B57"></a-plane>
-                </a-plane>
+            <!-- Montañas -->
+            <a-triangle position="-15 5 -20" rotation="0 0 0" scale="10 10 10" color="#556B2F"></a-triangle>
+            <a-triangle position="15 3 -18" rotation="0 30 0" scale="8 8 8" color="#6B8E23"></a-triangle>
+
+            <!-- Granjero -->
+            <a-entity id="farmer" position="-5 0 0" class="act1">
+                <a-cylinder position="0 1 0" radius="0.3" height="1.8" color="#8B4513"></a-cylinder>
+                <a-sphere position="0 1.9 0" radius="0.25" color="#DEB887"></a-sphere>
+                <a-cone position="0 2.2 0" radius-bottom="0.4" radius-top="0.1" height="0.3" color="#8B4513"></a-cone>
+                <a-cylinder position="-0.5 0.5 0" radius="0.1" height="1" color="#8B4513" rotation="0 0 45"></a-cylinder>
             </a-entity>
-            
-            <!-- Contenedor de texto principal -->
-            <a-plane position="0 0 -0.03" width="10.5" height="3.5" color="#FFFFFF" opacity="0.9">
-                <a-text id="main-story-text" 
-                        value="Historia:&#10;Un granjero vivía trabajando duro en los campos antiguos de China.&#10;&#10;Moraleja:&#10;Enseña sobre los peligros de depender de la suerte en lugar&#10;del trabajo duro. No se debe abandonar el esfuerzo esperando&#10;que la casualidad se repita.&#10;&#10;Contexto Cultural:&#10;Este chengyu se usa para criticar a personas que confían&#10;en golpes de suerte en lugar de mostrar iniciativa propia." 
-                        position="0 0 0.01" align="center" color="#2C2C2C" width="8"></a-text>
-            </a-plane>
-            
-            <!-- Botones con diseño mejorado -->
-            <a-entity position="0 -2.8 0">
-                <a-plane id="continue-btn" position="0 0 0.1" width="2.5" height="0.6" 
-                         color="#2E8B57" class="clickable"
-                         material="side: double">
-                    <a-text value="▶ CONTINUAR HISTORIA" position="0 0 0.01" align="center" color="white" width="6"></a-text>
-                </a-plane>
-                
-                <a-plane id="restart-btn" position="0 0 0.1" width="2.5" height="0.6" 
-                         color="#C41E3A" visible="false" class="clickable"
-                         material="side: double">
-                    <a-text value="🔄 VOLVER AL INICIO" position="0 0 0.01" align="center" color="white" width="6"></a-text>
-                </a-plane>
+
+            <!-- Tocón de árbol -->
+            <a-cylinder id="tree-stump" position="5 0 0" radius="0.5" height="1" color="#654321"></a-cylinder>
+
+            <!-- Conejo -->
+            <a-entity id="rabbit" position="15 0 0" class="act1">
+                <a-sphere position="0 0.3 0" radius="0.3" color="white"></a-sphere>
+                <a-cone position="0 0.6 0" radius-bottom="0.1" radius-top="0.05" height="0.3" color="white"></a-cone>
             </a-entity>
-            
-            <!-- Información adicional en la parte inferior -->
-            <a-plane position="0 -3.3 -0.05" width="11" height="0.3" color="#F0F0F0">
-                <a-text value="Origen: Huainanzi (淮南子) • Texto taoísta del siglo II a.C." 
-                        position="0 0 0.01" align="center" color="#666666" width="8"></a-text>
+
+            <!-- Maleza -->
+            <a-entity id="weeds" class="act3" visible="false">
+                <a-cone position="3 0 -2" radius-bottom="0.3" height="0.5" color="#228B22"></a-cone>
+                <a-cone position="-2 0 1" radius-bottom="0.2" height="0.4" color="#32CD32"></a-cone>
+            </a-entity>
+        </a-entity>
+
+        <!-- Panel informativo -->
+        <a-entity id="info-panel" position="0 2.5 -2" look-at="[camera]">
+            <a-plane width="3" height="2" color="rgba(255,255,255,0.95)" shader="flat">
+                <a-text value="守株待兔" position="0 0.7 0.1" scale="2 2 2" align="center" color="#C41E3A"></a-text>
+                <a-text id="story-text" position="0 0.2 0.1" width="2.5" align="center" color="#333"></a-text>
+                <a-plane id="progress-bar" width="2" height="0.1" position="0 -0.4 0.1" color="#CCC">
+                    <a-plane id="progress-fill" width="0.5" height="0.09" position="-0.75 -0.005 0.1" color="#2E8B57"></a-plane>
+                </a-plane>
+                <a-ring id="next-btn" class="clickable" position="0.8 -0.7 0.1" radius-inner="0.3" radius-outer="0.4" 
+                        theta-length="180" color="#2E8B57" rotation="0 0 90">
+                    <a-text value="▶" position="0 0 0.1" align="center" color="white"></a-text>
+                </a-ring>
             </a-plane>
         </a-entity>
 
-        <!-- Sistema de cámara con cursor configurado -->
-        <a-entity id="camera-rig" position="0 1.7 6">
-            <a-camera id="main-camera" 
-                      look-controls="enabled: true; pointerLockEnabled: false; touchEnabled: true; mouseEnabled: true"
-                      wasd-controls="enabled: true"
-                      raycaster="objects: .clickable; far: 50; near: 0.1">
-                      
-                <a-cursor position="0 0 -1"
-                         geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                         material="color: white; shader: flat"
-                         cursor="fuse: true; fuseTimeout: 1500"
-                         animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
-                         animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
-                         animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1">
-                </a-cursor>
+        <!-- Sistema de cámara -->
+        <a-entity id="camera-rig" position="0 1.6 5">
+            <a-camera wasd-controls="enabled: true" look-controls="enabled: true" 
+                     cursor="rayOrigin: mouse" raycaster="objects: .clickable">
+                <a-cursor fuse-timeout="1500"></a-cursor>
             </a-camera>
         </a-entity>
+
+        <script src="app.js"></script>
     </a-scene>
 </body>
 </html>

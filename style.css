@@ -1,38 +1,55 @@
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
-    font-family: Arial, sans-serif;
+    background: #000;
+    width: 100vw;
+    height: 100vh;
 }
 
-.vr-notice {
+#loading-screen {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #C41E3A;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: none;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1000;
+    color: white;
+    font-size: 1.2rem;
 }
 
-a-button {
-    cursor: pointer;
-    transition: all 0.3s ease;
+#main-scene {
+    border: none;
+    outline: none;
+    display: block;
 }
 
-a-button:hover {
-    opacity: 0.8;
-}
-
-
-/* Optimización móvil */
+/* Responsive para móviles */
 @media (max-width: 768px) {
-    #info-panel {
-        scale: 0.8;
+    #main-scene {
+        height: 100vh !important;
+        width: 100vw !important;
     }
     
-    #camera-rig {
-        position: 0 1.4 4;
+    #loading-screen h2 {
+        font-size: 1rem;
+        text-align: center;
+        padding: 20px;
     }
+}
+
+/* Optimizaciones de rendimiento */
+#main-scene canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
 }

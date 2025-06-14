@@ -12,6 +12,37 @@ body {
     height: 100vh;
 }
 
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #C41E3A;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin-top: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 #main-scene {
     border: none;
     outline: none;
@@ -24,11 +55,41 @@ body {
         height: 100vh !important;
         width: 100vw !important;
     }
+    
+    #loading-screen h2 {
+        font-size: 1rem;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    #story-panel {
+        transform: scale(0.8);
+    }
+}
+
+@media (orientation: landscape) and (max-width: 768px) {
+    #main-scene {
+        height: 100vh !important;
+        width: 100vw !important;
+    }
 }
 
 /* Optimizaciones de rendimiento */
 #main-scene canvas {
     image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
 }
+
+/* Estilos para elementos clickeables */
+.clickable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clickable:hover {
+    transform: scale(1.05);
+}
+

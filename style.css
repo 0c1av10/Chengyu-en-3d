@@ -12,38 +12,17 @@ body {
     height: 100vh;
 }
 
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    color: white;
-    font-size: 1.2rem;
-}
-
 #main-scene {
     border: none;
     outline: none;
     display: block;
 }
 
-/* Responsive para móviles */
+/* Responsive para moviles */
 @media (max-width: 768px) {
     #main-scene {
         height: 100vh !important;
         width: 100vw !important;
-    }
-    
-    #loading-screen h2 {
-        font-size: 1rem;
-        text-align: center;
-        padding: 20px;
     }
 }
 
@@ -53,4 +32,3 @@ body {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: optimize-contrast;
 }
-

@@ -3,27 +3,27 @@ let currentAct = 0;
 const totalActs = 4;
 let isAnimating = false;
 
-// Configuracion de los actos del chengyu (SIN ACENTOS)
+// Configuracion de los actos del chengyu (sin acentos para compatibilidad)
 const storyActs = [
     {
         title: "ACTO 1 DE 4",
         content: "Un granjero trabajaba diligentemente en sus campos cada dia.&#10;Con esfuerzo constante mantenia prosperas sus tierras.&#10;&#10;Un dia, mientras trabajaba, algo inesperado sucedio...",
         showElements: ['farmer', 'farm-area', 'rabbit'],
-        hideElements: ['dead-rabbit', 'weeds'],
+        hideElements: ['dead-rabbit', 'weeds', 'dust-particles'],
         animations: ['farmerWorking']
     },
     {
         title: "ACTO 2 DE 4", 
         content: "Un conejo corrio directamente hacia el tocon y murio!&#10;El granjero se emociono por esta suerte inesperada.&#10;&#10;Decidio abandonar su trabajo y esperar junto al tocon&#10;esperando que mas conejos hicieran lo mismo.",
-        showElements: ['dead-rabbit'],
+        showElements: ['dead-rabbit', 'dust-particles'],
         hideElements: ['rabbit'],
-        animations: ['rabbitRun', 'showDeadRabbit']
+        animations: ['rabbitRun', 'showDeadRabbit', 'showDust']
     },
     {
         title: "ACTO 3 DE 4",
         content: "Dia tras dia, el granjero esperaba junto al tocon.&#10;Mientras tanto, sus campos se llenaron de maleza.&#10;&#10;Las plantas que habia cultivado con tanto esfuerzo&#10;se arruinaron por falta de cuidado y atencion.",
         showElements: ['weeds'],
-        hideElements: [],
+        hideElements: ['dust-particles'],
         animations: ['growWeeds', 'farmerSitting']
     },
     {
@@ -37,7 +37,19 @@ const storyActs = [
 
 // Inicializacion cuando la escena esta lista
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Iniciando aplicacion del Chengyu');
+    console.log('Iniciando aplicacion del Chengyu 守株待兔');
+    
+    // Ocultar pantalla de carga despues de 3 segundos
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.transition = 'opacity 1s ease';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 1000);
+        }
+    }, 3000);
     
     const scene = document.querySelector('a-scene');
     
@@ -107,7 +119,7 @@ function setupEventListeners() {
         });
     }
     
-    console.log('Event listeners configurados');
+    console.log('Event listeners configurados correctamente');
 }
 
 function nextAct() {
@@ -124,7 +136,7 @@ function nextAct() {
 function restartStory() {
     if (isAnimating) return;
     
-    console.log('Reiniciando historia');
+    console.log('Reiniciando historia completa');
     
     currentAct = 0;
     resetScene();
@@ -141,8 +153,6 @@ function displayCurrentAct() {
     
     // Actualizar textos
     updateUI(act);
-    
-    // NO HAY CAMBIOS DE CAMARA - SE MANTIENE FIJA
     
     // Mostrar/ocultar elementos
     updateSceneElements(act);
@@ -175,7 +185,7 @@ function updateUI(act) {
     
     // Actualizar barra de progreso
     if (progressBar) {
-        const progressWidth = ((currentAct + 1) / totalActs) * 6;
+        const progressWidth = ((currentAct + 1) / totalActs) * 7;
         progressBar.setAttribute('animation__progress', {
             property: 'width',
             to: progressWidth,
@@ -183,12 +193,6 @@ function updateUI(act) {
             easing: 'easeOutQuart'
         });
     }
-}
-
-// CAMARA FIJA - NO SE LLAMA ESTA FUNCION
-function updateCamera() {
-    // FUNCION REMOVIDA - LA CAMARA PERMANECE FIJA
-    console.log('Camara permanece fija en posicion original');
 }
 
 function updateSceneElements(act) {
@@ -224,6 +228,9 @@ function executeAnimations(animations) {
                 break;
             case 'showDeadRabbit':
                 showDeadRabbit();
+                break;
+            case 'showDust':
+                showDustEffect();
                 break;
             case 'growWeeds':
                 animateWeedsGrowth();
@@ -263,6 +270,13 @@ function animateRabbitRun() {
             easing: 'easeInQuad'
         });
         
+        rabbit.setAttribute('animation__turn', {
+            property: 'rotation',
+            to: '0 -90 0',
+            dur: 1000,
+            easing: 'linear'
+        });
+        
         setTimeout(() => {
             rabbit.setAttribute('visible', false);
         }, 3000);
@@ -274,8 +288,40 @@ function showDeadRabbit() {
         const deadRabbit = document.querySelector('#dead-rabbit');
         if (deadRabbit) {
             deadRabbit.setAttribute('visible', true);
+            deadRabbit.setAttribute('animation__appear', {
+                property: 'opacity',
+                from: 0,
+                to: 1,
+                dur: 500,
+                easing: 'easeOutQuad'
+            });
         }
     }, 3200);
+}
+
+function showDustEffect() {
+    setTimeout(() => {
+        const dustParticles = document.querySelector('#dust-particles');
+        if (dustParticles) {
+            dustParticles.setAttribute('visible', true);
+            dustParticles.setAttribute('animation__dust', {
+                property: 'scale',
+                from: '0.1 0.1 0.1',
+                to: '2.5 2.5 2.5',
+                dur: 1000,
+                easing: 'easeOutQuart'
+            });
+            
+            dustParticles.setAttribute('animation__fade', {
+                property: 'opacity',
+                from: 1,
+                to: 0,
+                dur: 2000,
+                delay: 1000,
+                easing: 'easeInQuad'
+            });
+        }
+    }, 3100);
 }
 
 function animateWeedsGrowth() {
@@ -287,7 +333,7 @@ function animateWeedsGrowth() {
             from: '0.1 0.1 0.1',
             to: '1 1 1',
             dur: 3000,
-            easing: 'easeOutQuart'
+            easing: 'easeOutElastic'
         });
     }
 }
@@ -319,7 +365,7 @@ function animateFarmerSitting() {
 }
 
 function showFinalView() {
-    console.log('Mostrando vista final con moraleja');
+    console.log('Mostrando vista final con moraleja del chengyu 守株待兔');
 }
 
 function updateButtons(isLastAct) {
@@ -336,14 +382,19 @@ function updateButtons(isLastAct) {
 }
 
 function resetScene() {
+    console.log('Reseteando escena completa');
+    
     // Resetear elementos visuales
-    const elementsToHide = ['dead-rabbit', 'weeds'];
+    const elementsToHide = ['dead-rabbit', 'weeds', 'dust-particles'];
     elementsToHide.forEach(elementId => {
         const element = document.querySelector('#' + elementId);
         if (element) {
             element.setAttribute('visible', false);
             element.removeAttribute('animation__grow');
+            element.removeAttribute('animation__dust');
+            element.removeAttribute('animation__fade');
             element.setAttribute('scale', '1 1 1');
+            element.setAttribute('opacity', 1);
         }
     });
     
@@ -360,7 +411,9 @@ function resetScene() {
     const rabbit = document.querySelector('#rabbit');
     if (rabbit) {
         rabbit.setAttribute('position', '15 0.2 -2');
+        rabbit.setAttribute('rotation', '0 0 0');
         rabbit.removeAttribute('animation__run');
+        rabbit.removeAttribute('animation__turn');
     }
     
     const farmer = document.querySelector('#farmer');
@@ -381,10 +434,27 @@ function resetScene() {
     // Resetear barra de progreso
     const progressBar = document.querySelector('#progress-bar');
     if (progressBar) {
-        progressBar.setAttribute('width', '1.5');
+        progressBar.setAttribute('width', '1.75');
+        progressBar.removeAttribute('animation__progress');
     }
     
     console.log('Escena reseteada correctamente');
 }
 
-console.log('Sistema completo del chengyu inicializado correctamente');
+// Verificar compatibilidad VR al cargar
+window.addEventListener('load', function() {
+    if (navigator.xr) {
+        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+            if (supported) {
+                console.log('VR soportado en este dispositivo');
+            } else {
+                console.log('VR no soportado en este dispositivo');
+            }
+        });
+    } else {
+        console.log('WebXR no disponible en este navegador');
+    }
+});
+
+console.log('Sistema completo del chengyu 守株待兔 inicializado correctamente');
+

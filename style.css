@@ -5,24 +5,29 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
-    background: #000;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
+    font-family: 'SimSun', 'Microsoft YaHei', sans-serif;
 }
 
-#scene {
-    border: none;
-    outline: none;
-    display: block;
+.vr-notice {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #C41E3A;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1000;
 }
 
+/* Optimización móvil */
 @media (max-width: 768px) {
-    #scene {
-        height: 100vh !important;
-        width: 100vw !important;
+    #info-panel {
+        scale: 0.8;
+    }
+    
+    #camera-rig {
+        position: 0 1.4 4;
     }
 }

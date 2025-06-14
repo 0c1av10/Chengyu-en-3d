@@ -1,12 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
+    margin: 0;
     overflow: hidden;
-    font-family: 'SimSun', 'Microsoft YaHei', sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 .vr-notice {
@@ -15,11 +10,21 @@ body {
     right: 20px;
     background: #C41E3A;
     color: white;
-    padding: 10px 15px;
+    padding: 10px 20px;
     border-radius: 5px;
     display: none;
     z-index: 1000;
 }
+
+a-button {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+a-button:hover {
+    opacity: 0.8;
+}
+
 
 /* Optimización móvil */
 @media (max-width: 768px) {

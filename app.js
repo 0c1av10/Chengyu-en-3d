@@ -3,57 +3,41 @@ let currentAct = 0;
 const totalActs = 4;
 let isAnimating = false;
 
-// Configuración de los actos del chengyu
+// Configuracion de los actos del chengyu (SIN ACENTOS)
 const storyActs = [
     {
         title: "ACTO 1 DE 4",
-        content: "Un granjero trabajaba diligentemente en sus campos cada día.&#10;Con esfuerzo constante mantenía prósperas sus tierras.&#10;&#10;Un día, mientras trabajaba, algo inesperado sucedió...",
-        cameraPosition: "0 1.7 8",
-        cameraRotation: "0 0 0",
+        content: "Un granjero trabajaba diligentemente en sus campos cada dia.&#10;Con esfuerzo constante mantenia prosperas sus tierras.&#10;&#10;Un dia, mientras trabajaba, algo inesperado sucedio...",
         showElements: ['farmer', 'farm-area', 'rabbit'],
         hideElements: ['dead-rabbit', 'weeds'],
         animations: ['farmerWorking']
     },
     {
         title: "ACTO 2 DE 4", 
-        content: "¡Un conejo corrió directamente hacia el tocón y murió!&#10;El granjero se emocionó por esta suerte inesperada.&#10;&#10;Decidió abandonar su trabajo y esperar junto al tocón&#10;esperando que más conejos hicieran lo mismo.",
-        cameraPosition: "6 2.5 2",
-        cameraRotation: "-10 -45 0",
+        content: "Un conejo corrio directamente hacia el tocon y murio!&#10;El granjero se emociono por esta suerte inesperada.&#10;&#10;Decidio abandonar su trabajo y esperar junto al tocon&#10;esperando que mas conejos hicieran lo mismo.",
         showElements: ['dead-rabbit'],
         hideElements: ['rabbit'],
         animations: ['rabbitRun', 'showDeadRabbit']
     },
     {
         title: "ACTO 3 DE 4",
-        content: "Día tras día, el granjero esperaba junto al tocón.&#10;Mientras tanto, sus campos se llenaron de maleza.&#10;&#10;Las plantas que había cultivado con tanto esfuerzo&#10;se arruinaron por falta de cuidado y atención.",
-        cameraPosition: "-8 3 2", 
-        cameraRotation: "-15 90 0",
+        content: "Dia tras dia, el granjero esperaba junto al tocon.&#10;Mientras tanto, sus campos se llenaron de maleza.&#10;&#10;Las plantas que habia cultivado con tanto esfuerzo&#10;se arruinaron por falta de cuidado y atencion.",
         showElements: ['weeds'],
         hideElements: [],
         animations: ['growWeeds', 'farmerSitting']
     },
     {
         title: "ACTO 4 DE 4",
-        content: "Nunca llegaron más conejos al tocón.&#10;El granjero perdió toda su cosecha por abandonar&#10;el trabajo duro y depender de la suerte.&#10;&#10;MORALEJA: 守株待兔&#10;No confíes en golpes de suerte casuales.&#10;El éxito viene del esfuerzo constante.",
-        cameraPosition: "0 4 0",
-        cameraRotation: "-30 0 0",
+        content: "Nunca llegaron mas conejos al tocon.&#10;El granjero perdio toda su cosecha por abandonar&#10;el trabajo duro y depender de la suerte.&#10;&#10;MORALEJA: 守株待兔&#10;No confies en golpes de suerte casuales.&#10;El exito viene del esfuerzo constante.",
         showElements: ['weeds'],
         hideElements: [],
         animations: ['finalView']
     }
 ];
 
-// Inicialización cuando la escena está lista
+// Inicializacion cuando la escena esta lista
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Iniciando aplicación del Chengyu 守株待兔');
-    
-    // Ocultar pantalla de carga después de 2 segundos
-    setTimeout(() => {
-        const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen) {
-            loadingScreen.style.display = 'none';
-        }
-    }, 2000);
+    console.log('Iniciando aplicacion del Chengyu');
     
     const scene = document.querySelector('a-scene');
     
@@ -65,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeApp() {
-    console.log('🎬 Inicializando sistema del chengyu');
+    console.log('Inicializando sistema del chengyu');
     
     setupEventListeners();
     displayCurrentAct();
@@ -115,21 +99,21 @@ function setupEventListeners() {
     const scene = document.querySelector('a-scene');
     if (scene) {
         scene.addEventListener('enter-vr', function() {
-            console.log('🥽 Entrando en modo VR');
+            console.log('Entrando en modo VR');
         });
         
         scene.addEventListener('exit-vr', function() {
-            console.log('🖥️ Saliendo del modo VR');
+            console.log('Saliendo del modo VR');
         });
     }
     
-    console.log('✅ Event listeners configurados');
+    console.log('Event listeners configurados');
 }
 
 function nextAct() {
     if (isAnimating) return;
     
-    console.log('📖 Avanzando al siguiente acto');
+    console.log('Avanzando al siguiente acto');
     
     if (currentAct < totalActs - 1) {
         currentAct++;
@@ -140,7 +124,7 @@ function nextAct() {
 function restartStory() {
     if (isAnimating) return;
     
-    console.log('🔄 Reiniciando historia');
+    console.log('Reiniciando historia');
     
     currentAct = 0;
     resetScene();
@@ -153,23 +137,22 @@ function displayCurrentAct() {
     isAnimating = true;
     const act = storyActs[currentAct];
     
-    console.log(`🎭 Mostrando ${act.title}`);
+    console.log('Mostrando ' + act.title);
     
     // Actualizar textos
     updateUI(act);
     
-    // Actualizar cámara
-    updateCamera(act.cameraPosition, act.cameraRotation);
+    // NO HAY CAMBIOS DE CAMARA - SE MANTIENE FIJA
     
     // Mostrar/ocultar elementos
     updateSceneElements(act);
     
-    // Ejecutar animaciones específicas
+    // Ejecutar animaciones especificas
     if (act.animations) {
         executeAnimations(act.animations);
     }
     
-    // Mostrar botón apropiado
+    // Mostrar boton apropiado
     updateButtons(currentAct === totalActs - 1);
     
     setTimeout(() => {
@@ -202,42 +185,27 @@ function updateUI(act) {
     }
 }
 
-function updateCamera(position, rotation) {
-    const cameraRig = document.querySelector('#camera-rig');
-    if (cameraRig) {
-        cameraRig.setAttribute('animation__position', {
-            property: 'position',
-            to: position,
-            dur: 2000,
-            easing: 'easeInOutQuart'
-        });
-        
-        if (rotation) {
-            cameraRig.setAttribute('animation__rotation', {
-                property: 'rotation',
-                to: rotation,
-                dur: 2000,
-                easing: 'easeInOutQuart'
-            });
-        }
-    }
+// CAMARA FIJA - NO SE LLAMA ESTA FUNCION
+function updateCamera() {
+    // FUNCION REMOVIDA - LA CAMARA PERMANECE FIJA
+    console.log('Camara permanece fija en posicion original');
 }
 
 function updateSceneElements(act) {
-    // Mostrar elementos específicos
+    // Mostrar elementos especificos
     if (act.showElements) {
         act.showElements.forEach(elementId => {
-            const element = document.querySelector(`#${elementId}`);
+            const element = document.querySelector('#' + elementId);
             if (element) {
                 element.setAttribute('visible', true);
             }
         });
     }
     
-    // Ocultar elementos específicos
+    // Ocultar elementos especificos
     if (act.hideElements) {
         act.hideElements.forEach(elementId => {
-            const element = document.querySelector(`#${elementId}`);
+            const element = document.querySelector('#' + elementId);
             if (element) {
                 element.setAttribute('visible', false);
             }
@@ -341,7 +309,7 @@ function animateFarmerSitting() {
             easing: 'easeInOutQuart'
         });
         
-        // Detener animación de trabajo
+        // Detener animacion de trabajo
         const tool = document.querySelector('#tool');
         if (tool) {
             tool.removeAttribute('animation__work');
@@ -351,7 +319,7 @@ function animateFarmerSitting() {
 }
 
 function showFinalView() {
-    console.log('📖 Mostrando vista final con moraleja');
+    console.log('Mostrando vista final con moraleja');
 }
 
 function updateButtons(isLastAct) {
@@ -371,7 +339,7 @@ function resetScene() {
     // Resetear elementos visuales
     const elementsToHide = ['dead-rabbit', 'weeds'];
     elementsToHide.forEach(elementId => {
-        const element = document.querySelector(`#${elementId}`);
+        const element = document.querySelector('#' + elementId);
         if (element) {
             element.setAttribute('visible', false);
             element.removeAttribute('animation__grow');
@@ -382,7 +350,7 @@ function resetScene() {
     // Mostrar elementos iniciales
     const elementsToShow = ['rabbit', 'farmer', 'farm-area'];
     elementsToShow.forEach(elementId => {
-        const element = document.querySelector(`#${elementId}`);
+        const element = document.querySelector('#' + elementId);
         if (element) {
             element.setAttribute('visible', true);
         }
@@ -416,22 +384,7 @@ function resetScene() {
         progressBar.setAttribute('width', '1.5');
     }
     
-    console.log('🔄 Escena reseteada correctamente');
+    console.log('Escena reseteada correctamente');
 }
 
-// Verificar compatibilidad VR al cargar
-window.addEventListener('load', function() {
-    if (navigator.xr) {
-        navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
-            if (supported) {
-                console.log('✅ VR soportado en este dispositivo');
-            } else {
-                console.log('❌ VR no soportado en este dispositivo');
-            }
-        });
-    } else {
-        console.log('❌ WebXR no disponible en este navegador');
-    }
-});
-
-console.log('🐰 Sistema completo del chengyu 守株待兔 inicializado correctamente');
+console.log('Sistema completo del chengyu inicializado correctamente');
